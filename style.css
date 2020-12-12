@@ -1,0 +1,11 @@
+button {
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+  background-color: whitesmoke;
+  border: 1px black solid;
+}
+
+button:active {
+  background-color: white;
+}
