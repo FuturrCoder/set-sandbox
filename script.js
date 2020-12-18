@@ -45,12 +45,46 @@ class Card extends React.Component {
   }
 }
 
+class Board extends React.Component {
+  renderCard() {
+    return (
+      <Card
+        shape="diamond"
+        color="purple"
+        shading="solid"
+        number="2"
+      />
+    );
+  }
+
+  render() {
+    return (
+      <div>
+        <table width="100%">
+          <tbody>
+            <tr>
+              <td>{this.renderCard()}</td>
+              <td>{this.renderCard()}</td>
+              <td>{this.renderCard()}</td>
+            </tr>
+            <tr>
+              <td>{this.renderCard()}</td>
+              <td>{this.renderCard()}</td>
+              <td>{this.renderCard()}</td>
+            </tr>
+            <tr>
+              <td>{this.renderCard()}</td>
+              <td>{this.renderCard()}</td>
+              <td>{this.renderCard()}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+}
+
 ReactDOM.render(
-  <Card
-    shape="oval"
-    color="red"
-    shading="solid"
-    number="2"
-  />,
+  <Board />,
   document.getElementById('game')
 );
