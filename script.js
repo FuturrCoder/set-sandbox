@@ -11,6 +11,11 @@ let shapeData = {
   oval: "M25,99.5C14.2,99.5,5.5,90.8,5.5,80V20C5.5,9.2,14.2,0.5,25,0.5S44.5,9.2,44.5,20v60 C44.5,90.8,35.8,99.5,25,99.5z"
 };
 
+let colors = ["purple", "green", "red"]
+let shapes = ["diamond", "squiggle", "oval"]
+let shadings = ["empty", "solid", "striped"]
+let numbers = ["1", "2", "3"]
+
 class Card extends React.Component {
   render() {
     let fill;
@@ -46,13 +51,13 @@ class Card extends React.Component {
 }
 
 class Board extends React.Component {
-  renderCard() {
+  renderCard(shape, color, shading, number) {
     return (
       <Card
-        shape="diamond"
-        color="purple"
-        shading="solid"
-        number="2"
+        shape={shape}
+        color={color}
+        shading={shading}
+        number={number}
       />
     );
   }
@@ -63,14 +68,14 @@ class Board extends React.Component {
         <table width="100%">
           <tbody>
             <tr>
-              <td>{this.renderCard()}</td>
-              <td>{this.renderCard()}</td>
-              <td>{this.renderCard()}</td>
+              <td>{this.renderCard("diamond", "green", "striped", "3")}</td>
+              <td>{this.renderCard("oval", "purple", "solid", "1")}</td>
+              <td>{this.renderCard("diamond", "red", "striped", "1")}</td>
             </tr>
             <tr>
-              <td>{this.renderCard()}</td>
-              <td>{this.renderCard()}</td>
-              <td>{this.renderCard()}</td>
+              <td>{this.renderCard("squiggle", "purple", "empty", "2")}</td>
+              <td>{this.renderCard("squiggle", "red", "solid", "3")}</td>
+              <td>{this.renderCard("oval", "green", "empty", "2")}</td>
             </tr>
             <tr>
               <td>{this.renderCard()}</td>
@@ -84,7 +89,36 @@ class Board extends React.Component {
   }
 }
 
+class Game extends React.Component {
+  constructor(props) {
+    super(props);
+    let deck = []
+
+    for (let color of colors) {
+      for (let shape of shapes) {
+        for (let shading of shadings) {
+          for (let number of numbers) {
+            deck.push({
+              color: color,
+              shape: shape,
+              shading: shading,
+              number: number
+            });
+          }
+        }
+      }
+    }
+    
+  }
+
+  render() {
+    return (
+      <Board />
+    )
+  }
+}
+
 ReactDOM.render(
-  <Board />,
+  <Game />,
   document.getElementById('game')
 );

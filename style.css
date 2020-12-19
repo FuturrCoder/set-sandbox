@@ -9,3 +9,7 @@ button {
 button:active {
   background-color: white;
 }
+
+td {
+  width: 33%;
+}
