@@ -51,13 +51,13 @@ class Card extends React.Component {
 }
 
 class Board extends React.Component {
-  renderCard(shape, color, shading, number) {
+  renderCard(props) {
     return (
       <Card
-        shape={shape}
-        color={color}
-        shading={shading}
-        number={number}
+        shape={props.shape}
+        color={props.color}
+        shading={props.shading}
+        number={props.number}
       />
     );
   }
@@ -68,19 +68,24 @@ class Board extends React.Component {
         <table width="100%">
           <tbody>
             <tr>
-              <td>{this.renderCard("diamond", "green", "striped", "3")}</td>
-              <td>{this.renderCard("oval", "purple", "solid", "1")}</td>
-              <td>{this.renderCard("diamond", "red", "striped", "1")}</td>
+              <td>{this.renderCard(this.props.cards[0])}</td>
+              <td>{this.renderCard(this.props.cards[1])}</td>
+              <td>{this.renderCard(this.props.cards[2])}</td>
             </tr>
             <tr>
-              <td>{this.renderCard("squiggle", "purple", "empty", "2")}</td>
-              <td>{this.renderCard("squiggle", "red", "solid", "3")}</td>
-              <td>{this.renderCard("oval", "green", "empty", "2")}</td>
+              <td>{this.renderCard(this.props.cards[3])}</td>
+              <td>{this.renderCard(this.props.cards[4])}</td>
+              <td>{this.renderCard(this.props.cards[5])}</td>
             </tr>
             <tr>
-              <td>{this.renderCard()}</td>
-              <td>{this.renderCard()}</td>
-              <td>{this.renderCard()}</td>
+              <td>{this.renderCard(this.props.cards[6])}</td>
+              <td>{this.renderCard(this.props.cards[7])}</td>
+              <td>{this.renderCard(this.props.cards[8])}</td>
+            </tr>
+            <tr>
+              <td>{this.renderCard(this.props.cards[9])}</td>
+              <td>{this.renderCard(this.props.cards[10])}</td>
+              <td>{this.renderCard(this.props.cards[11])}</td>
             </tr>
           </tbody>
         </table>
@@ -92,7 +97,7 @@ class Board extends React.Component {
 class Game extends React.Component {
   constructor(props) {
     super(props);
-    let deck = []
+    let deck = [];
 
     for (let color of colors) {
       for (let shape of shapes) {
@@ -108,12 +113,27 @@ class Game extends React.Component {
         }
       }
     }
-    
+
+    let board = [];
+
+    for (let i = 0; i < 12; i++) {
+      let rand = Math.floor(Math.random() * deck.length);
+
+      board.push(deck[rand])
+      deck.splice(rand, 1)
+    }
+
+    this.state = {
+      deck: deck,
+      board: board
+    };
   }
 
   render() {
     return (
-      <Board />
+      <Board
+        cards={this.state.board}
+      />
     )
   }
 }
