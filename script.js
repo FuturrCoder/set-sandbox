@@ -32,7 +32,7 @@ class Card extends React.Component {
 
     for (let i = 0; i < parseInt(this.props.number); i++) {
       shapes.push(
-        <svg key={i} width="50" height="100">
+        <svg key={i} width="50" height="101">
           <path
             d={shapeData[this.props.shape]}
             stroke={this.props.color}
@@ -42,8 +42,12 @@ class Card extends React.Component {
       );
     }
 
+    let style = {
+      border: `${this.props.isSelected ? "5" : "1"}px solid ${this.props.isSelected ? "blue" : "black"}`
+    };
+
     return (
-      <button>
+      <button onClick={this.props.onClick} style={style}>
         {shapes}
       </button>
     );
@@ -51,13 +55,15 @@ class Card extends React.Component {
 }
 
 class Board extends React.Component {
-  renderCard(props) {
+  renderCard(props, i) {
     return (
       <Card
         shape={props.shape}
         color={props.color}
         shading={props.shading}
         number={props.number}
+        isSelected={props.isSelected}
+        onClick={() => this.props.onClick(i)}
       />
     );
   }
@@ -67,9 +73,9 @@ class Board extends React.Component {
     for (let i = 0; i < this.props.cards.length / 3; i++) {
       rows.push(
         <tr key={i}>
-          <td>{this.renderCard(this.props.cards[i*3])}</td>
-          <td>{this.renderCard(this.props.cards[i*3 + 1])}</td>
-          <td>{this.renderCard(this.props.cards[i*3 + 2])}</td>
+          <td>{this.renderCard(this.props.cards[i*3], i*3)}</td>
+          <td>{this.renderCard(this.props.cards[i*3 + 1], i*3 + 1)}</td>
+          <td>{this.renderCard(this.props.cards[i*3 + 2], i*3 + 2)}</td>
         </tr>
       )
     }
@@ -95,11 +101,17 @@ class Game extends React.Component {
       for (let shape of shapes) {
         for (let shading of shadings) {
           for (let number of numbers) {
+            let isSelected = false;
+            if (Math.random() > 0.5) {
+              isSelected = true;
+            }
+
             deck.push({
               color: color,
               shape: shape,
               shading: shading,
-              number: number
+              number: number,
+              isSelected: false
             });
           }
         }
@@ -111,8 +123,8 @@ class Game extends React.Component {
     for (let i = 0; i < 12; i++) {
       let rand = Math.floor(Math.random() * deck.length);
 
-      board.push(deck[rand])
-      deck.splice(rand, 1)
+      board.push(deck[rand]);
+      deck.splice(rand, 1);
     }
 
     this.state = {
@@ -121,10 +133,47 @@ class Game extends React.Component {
     };
   }
 
+  isSet(selected) {
+    // selected has 3 cards
+    // TODO: return whether the cards form a set
+    return true;
+  }
+
+  handleClick(i) {
+    let newBoard = this.state.board.slice();
+    newBoard[i].isSelected = !newBoard[i].isSelected;
+    this.setState({
+      deck: this.state.deck,
+      board: newBoard
+    });
+
+    let selected = [];
+
+    for (let card of newBoard) {
+      if (card.isSelected) {
+        selected.push({
+          color: card.color,
+          shape: card.shape,
+          shading: card.shading,
+          number: card.number
+        });
+      }
+    }
+    
+    if (selected.length >= 3) {
+      if (this.isSet(selected)) {
+        alert("You have selected a set!");
+      } else {
+        alert("That is not a set.");
+      }
+    }
+  }
+
   render() {
     return (
       <Board
         cards={this.state.board}
+        onClick={(i) => this.handleClick(i)}
       />
     )
   }
