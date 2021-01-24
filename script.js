@@ -63,30 +63,22 @@ class Board extends React.Component {
   }
 
   render() {
+    let rows = [];
+    for (let i = 0; i < this.props.cards.length / 3; i++) {
+      rows.push(
+        <tr key={i}>
+          <td>{this.renderCard(this.props.cards[i*3])}</td>
+          <td>{this.renderCard(this.props.cards[i*3 + 1])}</td>
+          <td>{this.renderCard(this.props.cards[i*3 + 2])}</td>
+        </tr>
+      )
+    }
+
     return (
       <div>
         <table width="100%">
           <tbody>
-            <tr>
-              <td>{this.renderCard(this.props.cards[0])}</td>
-              <td>{this.renderCard(this.props.cards[1])}</td>
-              <td>{this.renderCard(this.props.cards[2])}</td>
-            </tr>
-            <tr>
-              <td>{this.renderCard(this.props.cards[3])}</td>
-              <td>{this.renderCard(this.props.cards[4])}</td>
-              <td>{this.renderCard(this.props.cards[5])}</td>
-            </tr>
-            <tr>
-              <td>{this.renderCard(this.props.cards[6])}</td>
-              <td>{this.renderCard(this.props.cards[7])}</td>
-              <td>{this.renderCard(this.props.cards[8])}</td>
-            </tr>
-            <tr>
-              <td>{this.renderCard(this.props.cards[9])}</td>
-              <td>{this.renderCard(this.props.cards[10])}</td>
-              <td>{this.renderCard(this.props.cards[11])}</td>
-            </tr>
+            {rows}
           </tbody>
         </table>
       </div>
