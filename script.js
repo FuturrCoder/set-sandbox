@@ -20,9 +20,9 @@ class Card extends React.Component {
   render() {
     let fill;
 
-    if (this.props.shading == "empty") {
+    if (this.props.shading === "empty") {
       fill = "none";
-    } else if (this.props.shading == "solid") {
+    } else if (this.props.shading === "solid") {
       fill = this.props.color;
     } else {
       fill = `url(#striped-${this.props.color})`;
@@ -174,7 +174,7 @@ class Game extends React.Component {
       }
     }
     
-    if (selected.length == 3) {
+    if (selected.length === 3) {
       if (this.isSet(selected)) {
         alert("You have selected a set!");
       } else {
