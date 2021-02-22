@@ -1,9 +1,9 @@
-/*
-color: "purple", "green", "red"
-shape: "diamond", "squiggle", "oval"
-shading: "empty", "solid", "striped"
-number: 1, 2, 3
-*/
+const options = {
+  color: ["purple", "green", "red"],
+  shape: ["diamond", "squiggle", "oval"],
+  shading: ["empty", "solid", "striped"],
+  number: ["1", "2", "3"]
+}
 
 let shapeData = {
   diamond: "M25 0 L50 50 L25 100 L0 50 Z",
@@ -11,18 +11,18 @@ let shapeData = {
   oval: "M25,99.5C14.2,99.5,5.5,90.8,5.5,80V20C5.5,9.2,14.2,0.5,25,0.5S44.5,9.2,44.5,20v60 C44.5,90.8,35.8,99.5,25,99.5z"
 };
 
-let colors = ["purple", "green", "red"]
-let shapes = ["diamond", "squiggle", "oval"]
-let shadings = ["empty", "solid", "striped"]
-let numbers = ["1", "2", "3"]
+const colors = ["purple", "green", "red"]
+const shapes = ["diamond", "squiggle", "oval"]
+const shadings = ["empty", "solid", "striped"]
+const numbers = ["1", "2", "3"]
 
 class Card extends React.Component {
   render() {
     let fill;
 
-    if (this.props.shading == "empty") {
+    if (this.props.shading === "empty") {
       fill = "none";
-    } else if (this.props.shading == "solid") {
+    } else if (this.props.shading === "solid") {
       fill = this.props.color;
     } else {
       fill = `url(#striped-${this.props.color})`;
@@ -136,7 +136,21 @@ class Game extends React.Component {
   isSet(selected) {
     // selected has 3 cards
     // TODO: return whether the cards form a set
-    return true;
+    let thirdCard = {};
+    for (const key in selected[0]) {
+      if (selected[0][key] === selected[1][key]) {
+        thirdCard[key] = selected[0][key];
+      } else {
+        let optionsOfKey = options[key].slice();
+        const firstCardIndex = optionsOfKey.indexOf(selected[0][key]);
+        optionsOfKey.splice(firstCardIndex, 1)
+        const secondCardIndex = optionsOfKey.indexOf(selected[1][key]);
+        optionsOfKey.splice(secondCardIndex, 1)
+
+        thirdCard[key] = optionsOfKey[0];
+      }
+    }
+    return JSON.stringify(thirdCard) === JSON.stringify(selected[2]);
   }
 
   handleClick(i) {
@@ -160,7 +174,7 @@ class Game extends React.Component {
       }
     }
     
-    if (selected.length >= 3) {
+    if (selected.length === 3) {
       if (this.isSet(selected)) {
         alert("You have selected a set!");
       } else {
